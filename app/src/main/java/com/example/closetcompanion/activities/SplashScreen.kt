@@ -13,7 +13,7 @@ class SplashScreen : AppCompatActivity() {
         setContentView(R.layout.activity_splash_screen)
 
         Handler().postDelayed(Runnable {
-            val i = Intent(this@SplashScreen, HomePage::class.java)
+            val i = Intent(this@SplashScreen, LandingPage::class.java)
             startActivity(i)
             finish()
         }, 2000) // 2000 milliseconds = 2 seconds
