@@ -11,11 +11,22 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
+import androidx.activity.compose.setContent
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
+import androidx.lifecycle.LiveData
 import androidx.work.*
+import androidx.work.Operation.SUCCESS
+import androidx.work.Operation.State
 import com.example.closetcompanion.R
+import com.example.closetcompanion.activities.HomePage
 import com.example.closetcompanion.data.LoginWorker
 import com.example.closetcompanion.data.WorkerKeys
+import com.example.closetcompanion.ui.theme.ClosetCompanionTheme
+import com.google.common.util.concurrent.FutureCallback
+import com.google.common.util.concurrent.Futures
 import kotlin.math.log
 
 // TODO: Rename parameter arguments, choose names that match
@@ -74,16 +85,16 @@ class LoginFragment : Fragment() {
         val userNameEditText = view.findViewById<EditText>(R.id.login_username_edit_text)
         val passwordEditText = view.findViewById<EditText>(R.id.login_password_edit_text)
         val progressbar = view.findViewById<ProgressBar>(R.id.login_progress_bar)
-        val loginButton = view.findViewById<Button>(R.id.login_to_landing_button)
 
         val workManager = WorkManager.getInstance(this.requireContext().applicationContext)
 
-        var workInfos: MutableList<WorkInfo>
-
+        //This is the listener that is activated when a user tries to log in.
         view.findViewById<Button>(R.id.login_to_landing_button).setOnClickListener {
-            userNameEditText.error = ""
+            userNameEditText.error = null
+            passwordEditText.error = null
             switchVisibility(progressbar)
 
+            //Get the Text the inside the fields.
             val username = userNameEditText.text.toString()
             val password = passwordEditText.text.toString()
 
@@ -94,30 +105,29 @@ class LoginFragment : Fragment() {
                         .putString(WorkerKeys.USERNAME, username)
                         .putString(WorkerKeys.PASSWORD, password)
                         .build()
-                )
-                .build()
+                ).build()
 
+            // Start the work in the back ground.
             workManager.beginUniqueWork("Login", ExistingWorkPolicy.KEEP, loginRequest).enqueue()
 
-            //Get a work manager instance
-            //get the current work information
-            workInfos = workManager.getWorkInfosForUniqueWork("Login").get()
-            //Find the work information associated with the loginRequest by comparing IDs
-            val loginRequestInfo =
-                workInfos.find{
-                    it.id == loginRequest.id
+            // Use Live Data to check to observe the workInfo object that is associated with the
+            // workRequest. We also check to make sure that the workInfo is in the Finished state.
+            // before we the input data against the database data.
+            workManager.getWorkInfoByIdLiveData(loginRequest.id)
+                .observe(this.viewLifecycleOwner) {
+                    if(it != null && it.state.isFinished){
+                        switchVisibility(progressbar)
+                        val result = it.outputData.getString(WorkerKeys.CORRECT_PASSWORD).toString()
+                        if(result.toBoolean()){
+                            startActivity(Intent(context, HomePage::class.java))
+                        }
+                        else{
+                            userNameEditText.error = "Check your username and try again."
+                            passwordEditText.error = "Check your password and try again."
+                            Toast.makeText(context, "Incorrect username or password.\nPlease try again.", Toast.LENGTH_LONG).show()
+                        }
+                    }
                 }
-
-            if(loginRequestInfo.outputData.getString(WorkerKeys.CORRECT_PASSWORD).toBoolean()){
-                //Handler().postDelayed({
-                startActivity(Intent(this.context, LandingFragment::class.java))
-                //},1000)
-            }
-            else{
-                Toast.makeText(this.context, "Username or Password is incorrect.\nPlease Try Again.", Toast.LENGTH_LONG).show()
-            }
-        }
-        val userDocument by derivedStateOf {
 
         }
     }

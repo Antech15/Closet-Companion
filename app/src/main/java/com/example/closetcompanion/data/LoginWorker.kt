@@ -21,11 +21,14 @@ class LoginWorker(
         val db = FirebaseFirestore.getInstance()
 
         Log.d("LoginWorker", "Starting DB Query")
-        val queryUserName = await(db.collection("User").whereEqualTo("username", workerParams.inputData.keyValueMap.getValue(WorkerKeys.USERNAME)).get())
+        val queryUserName = await(db.collection("Users").whereEqualTo("username", workerParams.inputData.keyValueMap.getValue(WorkerKeys.USERNAME)).get())
         if(!queryUserName.isEmpty){
             userDocument = queryUserName.documents.find{ it.getString("username") == workerParams.inputData.keyValueMap.getValue(WorkerKeys.USERNAME)}
 
-            if(userDocument!!.getString("password") == workerParams.inputData.keyValueMap.getValue(WorkerKeys.PASSWORD)){
+            val docP = userDocument!!.getString("password")
+            val workP = workerParams.inputData.keyValueMap.getValue(WorkerKeys.PASSWORD)
+
+            if(docP == workP){
                 return Result.success(
                     workDataOf(
                         WorkerKeys.CORRECT_PASSWORD to "true",
@@ -43,8 +46,10 @@ class LoginWorker(
             }
         }
         else{
+            Log.d("LoginFragment", "Failed, queryUserName is null")
             return Result.failure(
                 workDataOf(
+                    WorkerKeys.CORRECT_PASSWORD to "false",
                     WorkerKeys.USER_NOT_FOUND to "true"
                 )
             )
