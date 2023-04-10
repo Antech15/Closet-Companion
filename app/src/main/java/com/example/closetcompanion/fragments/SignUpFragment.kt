@@ -8,11 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.closetcompanion.R
 import com.example.closetcompanion.activities.HomePage
+import com.example.closetcompanion.data.LoginWorker
+import com.example.closetcompanion.data.WorkerKeys
 import com.example.closetcompanion.models.User
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Delay
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,10 +83,14 @@ class SignUpFragment : Fragment() {
         val passwordEditText = view.findViewById<EditText>(R.id.password_edit_text)
         val emailAddressEditText = view.findViewById<EditText>(R.id.signup_email_address_edit_text)
         val birthdayEditText = view.findViewById<EditText>(R.id.signup_dob_edit_text)
+        val progressbar = view.findViewById<ProgressBar>(R.id.signup_progressBar)
+
+        val workManager = WorkManager.getInstance(this.requireContext().applicationContext)
 
         val db = FirebaseFirestore.getInstance()
 
         view.findViewById<Button>(R.id.create_user_button).setOnClickListener {
+            switchVisibility(progressbar)
             //Create a user object and store the object to the firebase.
             val newUser = User(
                 username = userNameEditText.text.toString(),
@@ -86,12 +98,46 @@ class SignUpFragment : Fragment() {
                 first_name = firstNameEditText.text.toString(),
                 last_name = lastNameEditText.text.toString(),
                 email_address = emailAddressEditText.text.toString(),
-                dob = birthdayEditText.transitionName.toString()
+                dob = birthdayEditText.text.toString()
             )
             db.collection("Users").add(newUser).addOnSuccessListener {
-                Toast.makeText(this.context, "Created New Account!", Toast.LENGTH_LONG).show()
-                startActivity(Intent(this.context, HomePage::class.java))
+                //Creating a work Request and giving it a LoginWorker type to do the work.
+                val loginRequest = OneTimeWorkRequestBuilder<LoginWorker>()
+                    .setInputData(
+                        Data.Builder()
+                            .putString(WorkerKeys.USERNAME, newUser.username)
+                            .putString(WorkerKeys.PASSWORD, newUser.password)
+                            .build()
+                    ).build()
+
+                // Start the work in the back ground.
+                workManager.beginUniqueWork("Login", ExistingWorkPolicy.KEEP, loginRequest).enqueue()
+
+                workManager.getWorkInfoByIdLiveData(loginRequest.id)
+                    .observe(this.viewLifecycleOwner) {
+                        if(it != null && it.state.isFinished){
+                            switchVisibility(progressbar)
+                            val result = it.outputData.getString(WorkerKeys.CORRECT_PASSWORD).toString()
+                            if(result.toBoolean()){
+                                startActivity(Intent(context, HomePage::class.java))
+                            }
+                            else{
+                                userNameEditText.error = "Check your username and try again."
+                                passwordEditText.error = "Check your password and try again."
+                                Toast.makeText(context, "Incorrect username or password.\nPlease try again.", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+
             }
+        }
+    }
+
+    fun switchVisibility(progressBar: ProgressBar){
+        if(progressBar.visibility == ProgressBar.INVISIBLE){
+            progressBar.visibility = ProgressBar.VISIBLE
+        }else{
+            progressBar.visibility = ProgressBar.INVISIBLE
         }
     }
 }
