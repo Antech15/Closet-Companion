@@ -11,8 +11,8 @@ import android.widget.EditText
 import android.widget.Toast
 import com.example.closetcompanion.R
 import com.example.closetcompanion.activities.HomePage
-import com.example.closetcompanion.data.FirestoreUtil
 import com.example.closetcompanion.models.User
+import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -76,6 +76,8 @@ class SignUpFragment : Fragment() {
         val emailAddressEditText = view.findViewById<EditText>(R.id.signup_email_address_edit_text)
         val birthdayEditText = view.findViewById<EditText>(R.id.signup_dob_edit_text)
 
+        val db = FirebaseFirestore.getInstance()
+
         view.findViewById<Button>(R.id.create_user_button).setOnClickListener {
             //Create a user object and store the object to the firebase.
             val newUser = User(
@@ -86,7 +88,7 @@ class SignUpFragment : Fragment() {
                 email_address = emailAddressEditText.text.toString(),
                 dob = birthdayEditText.transitionName.toString()
             )
-            FirestoreUtil.db.collection("Users").add(newUser).addOnSuccessListener {
+            db.collection("Users").add(newUser).addOnSuccessListener {
                 Toast.makeText(this.context, "Created New Account!", Toast.LENGTH_LONG).show()
                 startActivity(Intent(this.context, HomePage::class.java))
             }

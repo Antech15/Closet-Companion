@@ -2,6 +2,7 @@ package com.example.closetcompanion.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +11,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.compose.runtime.derivedStateOf
+import androidx.work.*
 import com.example.closetcompanion.R
-import com.example.closetcompanion.activities.HomePage
-import com.example.closetcompanion.data.FirestoreUtil
+import com.example.closetcompanion.data.LoginWorker
+import com.example.closetcompanion.data.WorkerKeys
+import kotlin.math.log
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,31 +74,55 @@ class LoginFragment : Fragment() {
         val userNameEditText = view.findViewById<EditText>(R.id.login_username_edit_text)
         val passwordEditText = view.findViewById<EditText>(R.id.login_password_edit_text)
         val progressbar = view.findViewById<ProgressBar>(R.id.login_progress_bar)
+        val loginButton = view.findViewById<Button>(R.id.login_to_landing_button)
+
+        val workManager = WorkManager.getInstance(this.requireContext().applicationContext)
+
+        var workInfos: MutableList<WorkInfo>
 
         view.findViewById<Button>(R.id.login_to_landing_button).setOnClickListener {
             userNameEditText.error = ""
             switchVisibility(progressbar)
+
             val username = userNameEditText.text.toString()
             val password = passwordEditText.text.toString()
-            FirestoreUtil.db.collection("Users").whereEqualTo("username", username).get().addOnSuccessListener {
-                for (document in it.documents){
-                    if(document.getString("username") != username){
-                        continue
-                    }
 
-                    if(document.getString("password") != password){
-                        switchVisibility(progressbar)
-                        Toast.makeText(this.context, "Incorrect Username or Password.\nPlease Try Again.", Toast.LENGTH_LONG).show()
-                        break
-                    }
+            //Creating a work Request and giving it a LoginWorker type to do the work.
+            val loginRequest = OneTimeWorkRequestBuilder<LoginWorker>()
+                .setInputData(
+                    Data.Builder()
+                        .putString(WorkerKeys.USERNAME, username)
+                        .putString(WorkerKeys.PASSWORD, password)
+                        .build()
+                )
+                .build()
 
-                    //Handler().postDelayed({
-                    startActivity(Intent(this.context, HomePage::class.java))
-                    //},1000)
+            workManager.beginUniqueWork("Login", ExistingWorkPolicy.KEEP, loginRequest).enqueue()
+
+            //Get a work manager instance
+            //get the current work information
+            workInfos = workManager.getWorkInfosForUniqueWork("Login").get()
+            //Find the work information associated with the loginRequest by comparing IDs
+            val loginRequestInfo =
+                workInfos.find{
+                    it.id == loginRequest.id
                 }
+
+            if(loginRequestInfo.outputData.getString(WorkerKeys.CORRECT_PASSWORD).toBoolean()){
+                //Handler().postDelayed({
+                startActivity(Intent(this.context, LandingFragment::class.java))
+                //},1000)
+            }
+            else{
+                Toast.makeText(this.context, "Username or Password is incorrect.\nPlease Try Again.", Toast.LENGTH_LONG).show()
             }
         }
+        val userDocument by derivedStateOf {
+
+        }
     }
+
+
 
     fun switchVisibility(progressBar: ProgressBar){
         if(progressBar.visibility == ProgressBar.INVISIBLE){
