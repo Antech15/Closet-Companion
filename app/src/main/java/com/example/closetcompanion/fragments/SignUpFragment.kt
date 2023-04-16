@@ -20,7 +20,6 @@ import com.example.closetcompanion.data.LoginWorker
 import com.example.closetcompanion.data.WorkerKeys
 import com.example.closetcompanion.models.User
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.Delay
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -85,6 +84,10 @@ class SignUpFragment : Fragment() {
         val birthdayEditText = view.findViewById<EditText>(R.id.signup_dob_edit_text)
         val progressbar = view.findViewById<ProgressBar>(R.id.signup_progressBar)
 
+        view.findViewById<Button>(R.id.signup_back_button).setOnClickListener{
+            switchToNewFragment(LandingFragment())
+        }
+
         val workManager = WorkManager.getInstance(this.requireContext().applicationContext)
 
         val db = FirebaseFirestore.getInstance()
@@ -138,6 +141,13 @@ class SignUpFragment : Fragment() {
             progressBar.visibility = ProgressBar.VISIBLE
         }else{
             progressBar.visibility = ProgressBar.INVISIBLE
+        }
+    }
+
+    fun switchToNewFragment(frag: Fragment){
+        requireActivity().supportFragmentManager.beginTransaction().apply {
+            replace(R.id.landing_fragment_container, frag)
+            commit()
         }
     }
 }

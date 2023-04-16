@@ -2,7 +2,6 @@ package com.example.closetcompanion.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,23 +10,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.activity.compose.setContent
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
-import androidx.lifecycle.LiveData
 import androidx.work.*
-import androidx.work.Operation.SUCCESS
-import androidx.work.Operation.State
 import com.example.closetcompanion.R
 import com.example.closetcompanion.activities.HomePage
 import com.example.closetcompanion.data.LoginWorker
 import com.example.closetcompanion.data.WorkerKeys
-import com.example.closetcompanion.ui.theme.ClosetCompanionTheme
-import com.google.common.util.concurrent.FutureCallback
-import com.google.common.util.concurrent.Futures
-import kotlin.math.log
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -86,6 +73,10 @@ class LoginFragment : Fragment() {
         val passwordEditText = view.findViewById<EditText>(R.id.login_password_edit_text)
         val progressbar = view.findViewById<ProgressBar>(R.id.login_progress_bar)
 
+        view.findViewById<Button>(R.id.login_back_button).setOnClickListener{
+            switchToNewFragment(LandingFragment())
+        }
+
         val workManager = WorkManager.getInstance(this.requireContext().applicationContext)
 
         //This is the listener that is activated when a user tries to log in.
@@ -139,6 +130,13 @@ class LoginFragment : Fragment() {
             progressBar.visibility = ProgressBar.VISIBLE
         }else{
             progressBar.visibility = ProgressBar.INVISIBLE
+        }
+    }
+
+    fun switchToNewFragment(frag: Fragment){
+        requireActivity().supportFragmentManager.beginTransaction().apply {
+            replace(R.id.landing_fragment_container, frag)
+            commit()
         }
     }
 }
