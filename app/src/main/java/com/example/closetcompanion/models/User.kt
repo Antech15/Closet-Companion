@@ -7,4 +7,4 @@ data class User(
     val last_name: String,
     val email_address: String,
     val dob: String,
-    )
+    ): java.io.Serializable

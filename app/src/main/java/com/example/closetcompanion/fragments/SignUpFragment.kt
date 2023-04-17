@@ -19,6 +19,7 @@ import com.example.closetcompanion.activities.HomePage
 import com.example.closetcompanion.data.LoginWorker
 import com.example.closetcompanion.data.WorkerKeys
 import com.example.closetcompanion.models.User
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match
@@ -122,7 +123,8 @@ class SignUpFragment : Fragment() {
                             switchVisibility(progressbar)
                             val result = it.outputData.getString(WorkerKeys.CORRECT_PASSWORD).toString()
                             if(result.toBoolean()){
-                                startActivity(Intent(context, HomePage::class.java))
+                                val intent = Intent(context, HomePage::class.java)
+                                startActivity(intent)
                             }
                             else{
                                 userNameEditText.error = "Check your username and try again."
@@ -149,5 +151,16 @@ class SignUpFragment : Fragment() {
             replace(R.id.landing_fragment_container, frag)
             commit()
         }
+    }
+
+    fun parseUserDocument(userDoc: DocumentSnapshot): User {
+        return User(
+            userDoc.getString("username").toString(),
+            userDoc.getString("password").toString(),
+            userDoc.getString("first_name").toString(),
+            userDoc.getString("last_name").toString(),
+            userDoc.getString("email_address").toString(),
+            userDoc.getString("dob").toString()
+        )
     }
 }

@@ -15,6 +15,8 @@ import com.example.closetcompanion.R
 import com.example.closetcompanion.activities.HomePage
 import com.example.closetcompanion.data.LoginWorker
 import com.example.closetcompanion.data.WorkerKeys
+import com.example.closetcompanion.models.User
+import com.google.firebase.firestore.DocumentSnapshot
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -103,14 +105,22 @@ class LoginFragment : Fragment() {
 
             // Use Live Data to check to observe the workInfo object that is associated with the
             // workRequest. We also check to make sure that the workInfo is in the Finished state.
-            // before we the input data against the database data.
+            // before we compare the input data against the database data.
             workManager.getWorkInfoByIdLiveData(loginRequest.id)
                 .observe(this.viewLifecycleOwner) {
                     if(it != null && it.state.isFinished){
                         switchVisibility(progressbar)
                         val result = it.outputData.getString(WorkerKeys.CORRECT_PASSWORD).toString()
+
                         if(result.toBoolean()){
-                            startActivity(Intent(context, HomePage::class.java))
+                            val intent = Intent(context, HomePage::class.java)
+                            intent.putExtra("user", User(it.outputData.getString("username").toString(),
+                                                                it.outputData.getString("password").toString(),
+                                                                it.outputData.getString("first_name").toString(),
+                                                                it.outputData.getString("last_name").toString(),
+                                                                it.outputData.getString("email").toString(),
+                                                                it.outputData.getString("dob").toString()))
+                            startActivity(intent)
                         }
                         else{
                             userNameEditText.error = "Check your username and try again."
@@ -138,5 +148,16 @@ class LoginFragment : Fragment() {
             replace(R.id.landing_fragment_container, frag)
             commit()
         }
+    }
+
+    fun parseUserDocument(map: MutableMap<String, String>): User {
+        return User(
+            map["username"].toString(),
+            map["password"].toString(),
+            map["first_name"].toString(),
+            map["last_name"].toString(),
+            map["email_address"].toString(),
+            map["dob"].toString()
+        )
     }
 }

@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.work.CoroutineWorker
+import androidx.work.Data
+import androidx.work.Worker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.google.android.gms.tasks.Tasks.await
@@ -32,7 +34,12 @@ class LoginWorker(
                 return Result.success(
                     workDataOf(
                         WorkerKeys.CORRECT_PASSWORD to "true",
-                        WorkerKeys.USER_NOT_FOUND to "true"
+                        WorkerKeys.USER_NOT_FOUND to "true",
+                        WorkerKeys.USERNAME to userDocument.getString("username"),
+                        WorkerKeys.FIRST_NAME to userDocument.getString("first_name"),
+                        WorkerKeys.LAST_NAME to userDocument.getString("last_name"),
+                        WorkerKeys.EMAIL to userDocument.getString("email_address"),
+                        WorkerKeys.DOB to userDocument.getString("dob")
                     )
                 )
             }

@@ -8,6 +8,11 @@ object WorkerKeys {
     const val PUT_QUERY = "Put Query"
     val USERNAME = "username"
     val PASSWORD = "password"
+    val FIRST_NAME = "first name"
+    val LAST_NAME = "last name"
+    val EMAIL = "email"
+    val DOB = "dob"
     val CORRECT_PASSWORD = "correct"
     val USER_NOT_FOUND = "found"
+    val USER_DOC = "User Doc"
 }

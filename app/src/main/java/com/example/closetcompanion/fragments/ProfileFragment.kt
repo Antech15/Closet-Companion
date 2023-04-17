@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.example.closetcompanion.R
+import com.example.closetcompanion.models.User
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +63,18 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val usernameTextField = view.findViewById<TextView>(R.id.username_text_field)
+        val nameTextField = view.findViewById<TextView>(R.id.name_text_field)
+        val emailTextField = view.findViewById<TextView>(R.id.email_text_field)
+        val dobTextField = view.findViewById<TextView>(R.id.dob_text_field)
+
+        val name = param1!!.first_name + " " + param1!!.last_name
+        usernameTextField.text = param1!!.username
+            nameTextField.text = name
+            emailTextField.text = param1!!.email_address
+            dobTextField.text =  param1!!.dob
+
+
     }
 
 }
