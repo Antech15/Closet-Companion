@@ -1,12 +1,14 @@
 package com.example.closetcompanion.fragments
 
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import com.example.closetcompanion.R
 import com.example.closetcompanion.models.User
 
@@ -22,13 +24,14 @@ private const val ARG_PARAM2 = "param2"
  */
 class ProfileFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
+    private var param1: User? = null
     private var param2: String? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
+            param1 = it.getParcelable("user", User::class.java)!!
             param2 = it.getString(ARG_PARAM2)
         }
     }
@@ -37,6 +40,7 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val bundle = arguments
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
@@ -70,11 +74,9 @@ class ProfileFragment : Fragment() {
 
         val name = param1!!.first_name + " " + param1!!.last_name
         usernameTextField.text = param1!!.username
-            nameTextField.text = name
-            emailTextField.text = param1!!.email_address
-            dobTextField.text =  param1!!.dob
-
-
+        nameTextField.text = name
+        emailTextField.text = param1!!.email_address
+        dobTextField.text =  param1!!.dob
     }
 
 }

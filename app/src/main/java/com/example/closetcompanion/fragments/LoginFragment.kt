@@ -114,12 +114,13 @@ class LoginFragment : Fragment() {
 
                         if(result.toBoolean()){
                             val intent = Intent(context, HomePage::class.java)
-                            intent.putExtra("user", User(it.outputData.getString("username").toString(),
-                                                                it.outputData.getString("password").toString(),
-                                                                it.outputData.getString("first_name").toString(),
-                                                                it.outputData.getString("last_name").toString(),
-                                                                it.outputData.getString("email").toString(),
-                                                                it.outputData.getString("dob").toString()))
+                            val user = User(it.outputData.getString(WorkerKeys.USERNAME).toString(),
+                                it.outputData.getString(WorkerKeys.PASSWORD).toString(),
+                                it.outputData.getString(WorkerKeys.FIRST_NAME).toString(),
+                                it.outputData.getString(WorkerKeys.LAST_NAME).toString(),
+                                it.outputData.getString(WorkerKeys.EMAIL).toString(),
+                                it.outputData.getString(WorkerKeys.DOB).toString())
+                            intent.putExtra("user", user)
                             startActivity(intent)
                         }
                         else{

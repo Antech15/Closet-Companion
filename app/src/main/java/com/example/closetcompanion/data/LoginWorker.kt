@@ -36,6 +36,7 @@ class LoginWorker(
                         WorkerKeys.CORRECT_PASSWORD to "true",
                         WorkerKeys.USER_NOT_FOUND to "true",
                         WorkerKeys.USERNAME to userDocument.getString("username"),
+                        WorkerKeys.PASSWORD to docP,
                         WorkerKeys.FIRST_NAME to userDocument.getString("first_name"),
                         WorkerKeys.LAST_NAME to userDocument.getString("last_name"),
                         WorkerKeys.EMAIL to userDocument.getString("email_address"),
