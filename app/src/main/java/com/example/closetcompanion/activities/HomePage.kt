@@ -32,17 +32,15 @@ class HomePage : AppCompatActivity() {
 
         findViewById<BottomNavigationView>(R.id.home_page_bottom_nav).setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.drawable.baseline_person_24 -> {
-                    if(user != null){
-                        switchToNewFragmentWithUser("profile", user)
-                    }
+                R.id.ic_profile -> {
+                    switchToNewFragment(ProfileFragment())
                     true
                 }
-                R.drawable.baseline_feed_24 -> {
+                R.id.ic_feed -> {
                     switchToNewFragment(FeedFragment())
                     true
                 }
-                R.drawable.baseline_settings_24 -> {
+                R.id.ic_setting -> {
                     switchToNewFragment(SettingsFragment())
                     true
                 }
@@ -52,36 +50,38 @@ class HomePage : AppCompatActivity() {
     }
 
     fun switchToNewFragmentWithUser(frag: String, user: User?){
-        val bundle = Bundle()
-        bundle.putParcelable("user", user)
-        when(frag){
-            "profile" -> {
-                val profileFragment = ProfileFragment()
-                profileFragment.arguments = bundle
-                val transaction = supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.home_page_fragment_container, profileFragment)
-                transaction.commit()
-            }
-            "feed" -> {
-                val feedFragment = FeedFragment()
-                feedFragment.arguments = bundle
-                val transaction = supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.home_page_fragment_container, feedFragment)
-                transaction.commit()
-            }
-            "settings" -> {
-                val settingsFragment = SettingsFragment()
-                settingsFragment.arguments = bundle
-                val transaction = supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.home_page_fragment_container, settingsFragment)
-                transaction.commit()
-            }
-        }
+//        val bundle = Bundle()
+//        bundle.putParcelable("user", user)
+//        when(frag){
+//            "profile" -> {
+//                val profileFragment = ProfileFragment()
+//                profileFragment.arguments = bundle
+//                val transaction = supportFragmentManager.beginTransaction()
+//                transaction.replace(R.id.home_page_fragment_container, profileFragment)
+//                transaction.commit()
+//            }
+//            "feed" -> {
+//                val feedFragment = FeedFragment()
+//                feedFragment.arguments = bundle
+//                val transaction = supportFragmentManager.beginTransaction()
+//                transaction.replace(R.id.home_page_fragment_container, feedFragment)
+//                transaction.commit()
+//            }
+//            "settings" -> {
+//                val settingsFragment = SettingsFragment()
+//                settingsFragment.arguments = bundle
+//                val transaction = supportFragmentManager.beginTransaction()
+//                transaction.replace(R.id.home_page_fragment_container, settingsFragment)
+//                transaction.commit()
+//            }
+//        }
+
+
     }
 
     fun switchToNewFragment(frag: Fragment){
         supportFragmentManager.beginTransaction().apply {
-            add(R.id.home_page_fragment_container, frag)
+            replace(R.id.home_page_fragment_container, frag)
             commit()
         }
     }
