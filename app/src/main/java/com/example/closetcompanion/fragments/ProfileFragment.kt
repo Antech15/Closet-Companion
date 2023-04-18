@@ -31,7 +31,8 @@ class ProfileFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getParcelable("user", User::class.java)!!
+            val bundle = arguments
+            param1 = bundle?.getParcelable<User>("user")
             param2 = it.getString(ARG_PARAM2)
         }
     }
@@ -72,11 +73,11 @@ class ProfileFragment : Fragment() {
         val emailTextField = view.findViewById<TextView>(R.id.email_text_field)
         val dobTextField = view.findViewById<TextView>(R.id.dob_text_field)
 
-        val name = param1!!.first_name + " " + param1!!.last_name
-        usernameTextField.text = param1!!.username
+        val name = param1?.first_name + " " + param1?.last_name
+        usernameTextField.text = param1?.username
         nameTextField.text = name
-        emailTextField.text = param1!!.email_address
-        dobTextField.text =  param1!!.dob
+        emailTextField.text = param1?.email_address
+        dobTextField.text =  param1?.dob
     }
 
 }
