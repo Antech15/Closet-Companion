@@ -5,4 +5,13 @@
     <string name="profile">Profile</string>
     <string name="feed">Feed</string>
     <string name="closet">Closet</string>
+    <string name="name_label_text" />
+    <string name="name_hint_text" />
+    <string name="type_label_text" />
+    <string name="type_hint_text" />
+    <string name="size_label_text" />
+    <string name="size_hint_text" />
+    <string name="color_label_text" />
+    <string name="color_hint_text" />
+    <string name="status_label_text" />
 </resources>
