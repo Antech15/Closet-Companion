@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.example.closetcompanion.R
@@ -26,6 +27,7 @@ class ProfileFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: User? = null
     private var param2: String? = null
+    private lateinit var profileView: ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
