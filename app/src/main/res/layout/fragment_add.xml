@@ -13,11 +13,12 @@
         android:layout_width="241dp"
         android:layout_height="216dp"
         android:layout_marginTop="32dp"
+        android:background="#FFFFFF"
+        android:src="@drawable/baseline_add_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/backgrounds/scenic" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView3"
