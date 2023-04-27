@@ -1,10 +1,12 @@
 package com.example.closetcompanion.fragments
 
+import AddFragment
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import com.example.closetcompanion.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -14,10 +16,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [SettingsFragment.newInstance] factory method to
+ * Use the [ClosetFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class SettingsFragment : Fragment() {
+class ClosetFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -34,8 +36,27 @@ class SettingsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false)
+
+        val view = inflater.inflate(R.layout.fragment_closet, container, false)
+
+        // Find the button in the layout
+        val button = view.findViewById<Button>(R.id.bAdd)
+
+        button.setOnClickListener {
+            // Create an instance of the new fragment
+            val addFragment = AddFragment()
+
+            // Get the FragmentManager
+            val fragmentManager = requireActivity().supportFragmentManager
+
+            // Replace the current fragment with the new fragment
+            fragmentManager.beginTransaction()
+                .replace(R.id.home_page_fragment_container, addFragment)
+                .commit()
+        }
+
+        return view
+        //
     }
 
     companion object {
@@ -50,7 +71,7 @@ class SettingsFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            SettingsFragment().apply {
+            ClosetFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
