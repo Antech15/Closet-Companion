@@ -1,16 +1,23 @@
 package com.example.closetcompanion.fragments
 
-import android.content.res.Configuration
-import android.os.Build
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
+import com.example.closetcompanion.data.Images
 import com.example.closetcompanion.R
 import com.example.closetcompanion.models.User
+import com.example.closetcompanion.data.ImageDao
+import com.example.closetcompanion.data.ImageDatabase
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import android.net.Uri
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,6 +34,10 @@ class ProfileFragment : Fragment() {
     private var param1: User? = null
     private var param2: String? = null
 
+    private lateinit var imageDatabase: ImageDatabase
+    private lateinit var imageDao: ImageDao
+    private lateinit var profileImage: ImageView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +52,55 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val bundle = arguments
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        val view = inflater.inflate(R.layout.fragment_profile, container, false)
+
+        // Initialize imageDatabase and imageDao
+        imageDatabase = ImageDatabase.getDatabase(requireContext())
+        imageDao = imageDatabase.imageDao()
+        profileImage = view.findViewById(R.id.profile_picture_image)
+
+        // Load the image from the room when the fragment is created
+        loadImage()
+
+        // Set an OnClickListener to open the gallery when the profile picture is clicked
+        profileImage.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, PICK_IMAGE_REQUEST)
+        }
+
+        return view
+    }
+
+    // Handle the result of the gallery intent
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+            val imageUri = data.data.toString()
+            // Insert the selected image into the room
+            GlobalScope.launch {
+                imageDao.insertImage(Images(imageUri = imageUri))
+            }
+            // Load the selected image into the ImageView
+            profileImage.setImageURI(Uri.parse(imageUri))
+            // Delete any previous images from the room
+            GlobalScope.launch {
+                imageDao.deleteAllImages()
+            }
+        }
+    }
+
+    private fun loadImage() {
+        GlobalScope.launch {
+            val images = imageDao.getAllImages()
+            if (images.isNotEmpty()) {
+                val imageUri = images[0].imageUri
+                profileImage.setImageURI(Uri.parse(imageUri))
+            }
+        }
     }
 
     companion object {
@@ -56,6 +113,8 @@ class ProfileFragment : Fragment() {
          * @return A new instance of fragment ProfileFragment.
          */
         // TODO: Rename and change types and number of parameters
+        // Room local variable
+        const val PICK_IMAGE_REQUEST = 1
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             ProfileFragment().apply {
@@ -79,5 +138,4 @@ class ProfileFragment : Fragment() {
         emailTextField.text = param1?.email_address
         dobTextField.text =  param1?.dob
     }
-
 }
