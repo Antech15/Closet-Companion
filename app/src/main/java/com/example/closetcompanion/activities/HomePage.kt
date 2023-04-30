@@ -16,7 +16,6 @@ class HomePage : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var user: User? = null
         if(intent.hasExtra("user")){
             user = intent.extras?.get("user") as User
             //println(user)
@@ -24,9 +23,6 @@ class HomePage : AppCompatActivity() {
         }
         val fragContainer = findViewById<FragmentContainerView>(R.id.home_page_fragment_container)
         setContentView(R.layout.activity_home_page)
-
-
-
 
         findViewById<BottomNavigationView>(R.id.home_page_bottom_nav).setOnItemSelectedListener { item ->
             when (item.itemId) {
