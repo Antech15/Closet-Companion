@@ -53,6 +53,7 @@ class AddFragment : Fragment() {
 
         val homeActivity = requireActivity() as HomePage
         val userr = homeActivity.user
+        val email = userr!!.email_address
         if (userr != null) {
            Log.d(TAG, "lmao")
         }
@@ -76,7 +77,7 @@ class AddFragment : Fragment() {
             // Create a reference to the image file in Firebase Storage
             val timestamp = System.currentTimeMillis()
             val randomString = UUID.randomUUID().toString()
-            val imageUrl = "images/$timestamp-$randomString.jpg"
+            val imageUrl = "$email/items/$timestamp-$randomString.jpg"
             val imageRef = picture.reference.child(imageUrl)
 
             // Upload the image file to Firebase Storage
@@ -93,10 +94,11 @@ class AddFragment : Fragment() {
                                 size = sizeText.text.toString(),
                                 color = colorText.text.toString(),
                                 status = statusText.text.toString(),
-                                image = imageUrl
+                                image = imageUrl,
+                                user = userr!!.username
                             )
                             if (userr != null) {
-                                db.collection("Items").document(userr.email_address)
+                                db.collection("Items").document(userr.email_address).collection("Closet").document()
                                     .set(newItem)
                             }
 

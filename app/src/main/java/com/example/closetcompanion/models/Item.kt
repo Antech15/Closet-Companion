@@ -10,8 +10,10 @@ data class Item(
     val color: String,
     val status: String,
     val image: String,
+    val user: String
 ): Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readString().toString(),
@@ -27,6 +29,7 @@ data class Item(
         parcel.writeString(color)
         parcel.writeString(status)
         parcel.writeString(image)
+        parcel.writeString(user)
     }
 
     override fun describeContents(): Int {
