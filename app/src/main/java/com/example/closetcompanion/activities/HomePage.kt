@@ -13,6 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class HomePage : AppCompatActivity() {
 
     var user: User? = null
+    var image: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

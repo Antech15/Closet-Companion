@@ -18,6 +18,7 @@ import com.example.closetcompanion.data.ImageDatabase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import android.net.Uri
+import com.example.closetcompanion.activities.HomePage
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,7 +38,6 @@ class ProfileFragment : Fragment() {
     private lateinit var imageDatabase: ImageDatabase
     private lateinit var imageDao: ImageDao
     private lateinit var profileImage: ImageView
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,6 +78,8 @@ class ProfileFragment : Fragment() {
     // Handle the result of the gallery intent
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        val homeActivity = requireActivity() as HomePage
+
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             val imageUri = data.data.toString()
             // Insert the selected image into the room
@@ -86,6 +88,8 @@ class ProfileFragment : Fragment() {
             }
             // Load the selected image into the ImageView
             profileImage.setImageURI(Uri.parse(imageUri))
+            homeActivity.image = imageUri
+
             // Delete any previous images from the room
             GlobalScope.launch {
                 imageDao.deleteAllImages()
@@ -94,9 +98,16 @@ class ProfileFragment : Fragment() {
     }
 
     private fun loadImage() {
+
         GlobalScope.launch {
+            val homeActivity = requireActivity() as HomePage
+
+
             val images = imageDao.getAllImages()
-            if (images.isNotEmpty()) {
+            if(homeActivity.image != null) {
+                profileImage.setImageURI(Uri.parse(homeActivity.image))
+            }
+            else if (images.isNotEmpty()) {
                 val imageUri = images[0].imageUri
                 profileImage.setImageURI(Uri.parse(imageUri))
             }
