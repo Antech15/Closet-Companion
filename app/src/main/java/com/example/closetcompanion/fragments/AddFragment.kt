@@ -69,12 +69,13 @@ class AddFragment : Fragment() {
         val colorText = view.findViewById<EditText>(R.id.colorInput)
         val statusText = view.findViewById<EditText>(R.id.statusInput)
         val saveB = view.findViewById<Button>(R.id.saveButton)
+        val shareB = view.findViewById<Button>(R.id.shareButton)
 
         // Get the Firebase Storage and Firestore instances
         val picture = FirebaseStorage.getInstance()
         val db = FirebaseFirestore.getInstance()
 
-        saveB.setOnClickListener {
+        shareB.setOnClickListener {
 
             // Create a reference to the image file in Firebase Storage
             val timestamp = System.currentTimeMillis()
