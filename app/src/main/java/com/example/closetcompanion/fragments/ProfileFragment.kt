@@ -2,6 +2,8 @@ package com.example.closetcompanion.fragments
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
@@ -18,7 +20,9 @@ import com.example.closetcompanion.data.ImageDatabase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import android.net.Uri
+import androidx.lifecycle.lifecycleScope
 import com.example.closetcompanion.activities.HomePage
+import java.io.ByteArrayOutputStream
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -82,34 +86,47 @@ class ProfileFragment : Fragment() {
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             val imageUri = data.data.toString()
-            // Insert the selected image into the room
-            GlobalScope.launch {
-                imageDao.insertImage(Images(imageUri = imageUri))
-            }
-            // Load the selected image into the ImageView
-            profileImage.setImageURI(Uri.parse(imageUri))
-            homeActivity.image = imageUri
 
             // Delete any previous images from the room
-            GlobalScope.launch {
+            lifecycleScope.launch {
                 imageDao.deleteAllImages()
             }
+
+            // Convert the image URI to a Bitmap
+            val uri = Uri.parse(imageUri)
+            val imageBitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uri)
+
+            // Convert the Bitmap to a ByteArray
+            val outputStream = ByteArrayOutputStream()
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            val byteArray = outputStream.toByteArray()
+
+            // Insert the image data into Room
+            GlobalScope.launch {
+                imageDao.insertImage(Images(imageData = byteArray))
+            }
+            // Load the selected image into the ImageView
+            //profileImage.setImageURI(Uri.parse(imageUri))
+            loadImage()
+            //homeActivity.image = imageUri
+
         }
     }
 
     private fun loadImage() {
-
-        GlobalScope.launch {
-            val homeActivity = requireActivity() as HomePage
-
-
+        lifecycleScope.launch {
             val images = imageDao.getAllImages()
-            if(homeActivity.image != null) {
-                profileImage.setImageURI(Uri.parse(homeActivity.image))
-            }
-            else if (images.isNotEmpty()) {
-                val imageUri = images[0].imageUri
-                profileImage.setImageURI(Uri.parse(imageUri))
+            if (images.isNotEmpty()) {
+                val imagedata = images[0].imageData
+                if (imagedata != null) {
+                    // Convert the image data to a Bitmap
+                    val bitmap = BitmapFactory.decodeByteArray(imagedata, 0, imagedata.size)
+
+                    // Display the Bitmap in an ImageView
+                    profileImage.post {
+                        profileImage.setImageBitmap(bitmap)
+                    }
+                }
             }
         }
     }
