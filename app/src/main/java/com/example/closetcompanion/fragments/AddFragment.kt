@@ -2,6 +2,7 @@ import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -19,18 +20,22 @@ import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import com.example.closetcompanion.R
 import com.example.closetcompanion.activities.HomePage
-import com.example.closetcompanion.data.LoginWorker
-import com.example.closetcompanion.data.WorkerKeys
+import com.example.closetcompanion.data.*
 import com.example.closetcompanion.models.Item
 import com.example.closetcompanion.models.User
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
 import java.util.UUID
 
 class AddFragment : Fragment() {
 
     private lateinit var imageView: ImageView
     private lateinit var button: Button
+    private lateinit var closetDatabase: ClosetDatabase
+    private lateinit var clothesDao: ClothesDao
     private var imageUri: Uri? = null
 
     companion object {
@@ -74,6 +79,43 @@ class AddFragment : Fragment() {
         // Get the Firebase Storage and Firestore instances
         val picture = FirebaseStorage.getInstance()
         val db = FirebaseFirestore.getInstance()
+
+        // Initialize closetDatabase and closetDao
+        closetDatabase = ClosetDatabase.getDatabase(requireContext())
+        clothesDao = closetDatabase.clothesDao()
+
+        saveB.setOnClickListener {
+            // Convert the image URI to a Bitmap
+            val uri = Uri.parse(imageUri.toString())
+            val imageBitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uri)
+
+            // Convert the Bitmap to a ByteArray
+            val outputStream = ByteArrayOutputStream()
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            val byteArray = outputStream.toByteArray()
+
+            val name = nameText.text.toString()
+            val type = typeText.text.toString()
+            val size = sizeText.text.toString()
+            val color = colorText.text.toString()
+            val status = statusText.text.toString()
+
+            // Insert the image data into Room
+            GlobalScope.launch {
+                clothesDao.insertClothes(Clothes(imageData = byteArray, name = name, type = type, size = size, color = color, status = status))
+
+                val clothesList = clothesDao.getAllClothes()
+                clothesList.forEach { clothes ->
+                    println("Clothes id: ${clothes.id}")
+                    println("Clothes name: ${clothes.name}")
+                    println("Clothes type: ${clothes.type}")
+                    println("Clothes size: ${clothes.size}")
+                    println("Clothes color: ${clothes.color}")
+                    println("Clothes status: ${clothes.status}")
+                }
+            }
+
+        }
 
         shareB.setOnClickListener {
 
