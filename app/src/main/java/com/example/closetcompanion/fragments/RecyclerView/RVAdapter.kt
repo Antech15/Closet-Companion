@@ -23,7 +23,7 @@ class RVAdapter (private val dataList: List<closetItem>, var mContext: Context):
         val item = dataList[position]
         holder.title.text = "Clothing Item: " + item.title.toString()
         holder.type.text = "Clothing Type: " + item.type.toString()
-        holder.image.setImageDrawable(item.image.drawable)
+        //holder.image.setImageDrawable(item.image.drawable)
 
     }
 
@@ -35,7 +35,7 @@ class RVAdapter (private val dataList: List<closetItem>, var mContext: Context):
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.Title)
         val type: TextView = itemView.findViewById(R.id.Type)
-        val image: ImageView = itemView.findViewById(R.id.clothesPic)
+        //val image: ImageView = itemView.findViewById(R.id.clothesPic)
 
 
         init {

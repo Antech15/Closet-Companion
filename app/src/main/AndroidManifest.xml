@@ -12,6 +12,11 @@
         android:theme="@style/Theme.ClosetCompanion"
         tools:targetApi="33">
         <activity
+            android:name=".fragments.RecyclerView.Details"
+            android:exported="false"
+            android:label="@string/title_activity_details"
+            android:theme="@style/Theme.ClosetCompanion" />
+        <activity
             android:name=".activities.HomePage"
             android:exported="false" />
         <activity

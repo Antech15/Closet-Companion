@@ -1,10 +1,13 @@
 package com.example.closetcompanion.fragments.RecyclerView
 
-import android.widget.ImageView
 import java.io.Serializable
 
-data class closetItem (
+data class closetItem(
     val title: String,
     val type: String,
-    val image: ImageView,
+    val color: String,
+    val size: String,
+    val status: String,
+    val user: String,
+    //val image: ImageView,
 ): Serializable
