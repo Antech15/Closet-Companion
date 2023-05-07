@@ -14,7 +14,10 @@ interface ClosetDao {
     suspend fun deleteCloset(closet: Closet)
 
     @Query("SELECT * FROM closets WHERE id=:id")
-    suspend fun getClosetById(id: Int): Closet
+    suspend fun getClosetById(id: Int): Closet?
+
+    @Query("SELECT * FROM closets WHERE name = :name")
+    suspend fun getClosetByName(name: String): Closet?
 
     @Query("SELECT * FROM outfits WHERE id IN (SELECT outfit_ids FROM closets WHERE id=:id)")
     suspend fun getOutfitsByClosetId(id: Int): List<Outfit>
