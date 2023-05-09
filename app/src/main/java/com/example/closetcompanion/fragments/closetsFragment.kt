@@ -67,12 +67,14 @@ class closetsFragment : Fragment() {
 
         recyclerView = view.findViewById(R.id.closet_recycler_view)
 
-        var thing = listOf<Int>(0, 1)
-
         val thingamajig = Closet(0,"Joe mam", emptyList())
+        val thingamajig2 = Closet(1,"hello", emptyList())
+        val thingamajig3 = Closet(2,"testing", emptyList())
 
         var closetList = mutableListOf<Closet>()
         closetList.add(thingamajig)
+        closetList.add(thingamajig2)
+        closetList.add(thingamajig3)
 
         val closetAdapter = context?.let { ClosetAdapter(closetList.toMutableList(), it) }
         recyclerView.adapter = closetAdapter
@@ -98,6 +100,7 @@ class closetsFragment : Fragment() {
                 val newCloset = Closet(name = newClosetName, outfitIds = emptyList())
                 GlobalScope.launch {
                     closetDao.insertCloset(newCloset)
+                   print(newCloset)
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.example.closetcompanion.fragments.RecyclerView
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -12,13 +13,15 @@ import com.example.closetcompanion.R
 import com.example.closetcompanion.data.Closet
 
 class ClosetAdapter(
-    private val closetList: MutableList<Closet>,
+    private val closetList: List<Closet>,
     private val mContext: Context
 ) : RecyclerView.Adapter<ClosetAdapter.ViewHolder>() {
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_design, parent, false)
+            .inflate(R.layout.closet_item_design, parent, false)
+
         return ViewHolder(view)
     }
 
@@ -32,7 +35,7 @@ class ClosetAdapter(
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val closetName: TextView = itemView.findViewById(R.id.Title)
+        val closetName: TextView = itemView.findViewById(R.id.closetName)
 
         init {
             itemView.setOnClickListener {
