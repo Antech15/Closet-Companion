@@ -30,7 +30,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_title"
         app:layout_constraintVertical_bias=".00"
-        tools:src="@tools:sample/avatars" />
+        android:src="@drawable/default_profile_image" />
 
     <TextView
         android:id="@+id/username_text_field"
@@ -78,5 +78,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toEndOf="@+id/profile_picture_image" />
+
+    <TextView
+        android:id="@+id/profile_picture_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Click to edit profile picture"
+        android:textColor="#686f7a"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_picture_image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
