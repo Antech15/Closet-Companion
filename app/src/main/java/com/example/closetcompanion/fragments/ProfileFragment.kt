@@ -2,8 +2,7 @@ package com.example.closetcompanion.fragments
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
@@ -12,17 +11,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.example.closetcompanion.data.Images
 import com.example.closetcompanion.R
 import com.example.closetcompanion.models.User
-import com.example.closetcompanion.data.ImageDao
-import com.example.closetcompanion.data.ImageDatabase
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import android.net.Uri
-import androidx.lifecycle.lifecycleScope
+import androidx.core.content.ContextCompat
 import com.example.closetcompanion.activities.HomePage
-import java.io.ByteArrayOutputStream
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import java.util.*
+import com.bumptech.glide.Glide
+import com.google.firebase.ktx.Firebase
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,9 +36,11 @@ class ProfileFragment : Fragment() {
     private var param1: User? = null
     private var param2: String? = null
 
-    private lateinit var imageDatabase: ImageDatabase
-    private lateinit var imageDao: ImageDao
+    //private val homeActivity = requireActivity() as HomePage
+    //private val user = homeActivity.user
+
     private lateinit var profileImage: ImageView
+    private var storageRef: StorageReference? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,69 +61,65 @@ class ProfileFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
-        // Initialize imageDatabase and imageDao
-        imageDatabase = ImageDatabase.getDatabase(requireContext())
-        imageDao = imageDatabase.imageDao()
+
         profileImage = view.findViewById(R.id.profile_picture_image)
+        storageRef = FirebaseStorage.getInstance().reference
 
-        // Load the image from the room when the fragment is created
-        loadImage()
+        // Load the user's profile image if it exists in Firebase storage
+        loadProfileImage()
 
-        // Set an OnClickListener to open the gallery when the profile picture is clicked
-        profileImage.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(intent, PICK_IMAGE_REQUEST)
-        }
+        // Set up click listener for the profile image
+        profileImage.setOnClickListener { chooseImage() }
 
         return view
+    }
+
+
+    private fun chooseImage() {
+        if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+            || ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+        } else {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, 2)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == 1 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            chooseImage()
+        }
+    }
+
+    private fun loadProfileImage() {
+        val imageRef = storageRef?.child("${param1?.email_address}/profile_picture/${param1?.email_address}-profile-pic.jpg")
+        imageRef?.metadata?.addOnSuccessListener { metadata ->
+            // Image exists, download the URL and display in ImageView
+            imageRef.downloadUrl.addOnSuccessListener { uri ->
+                Glide.with(this).load(uri).into(profileImage)
+            }
+        }?.addOnFailureListener {
+            // Image does not exist
+        }
     }
 
     // Handle the result of the gallery intent
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val homeActivity = requireActivity() as HomePage
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
-            val imageUri = data.data.toString()
-
-            // Delete any previous images from the room
-            lifecycleScope.launch {
-                imageDao.deleteAllImages()
-            }
-
-            // Convert the image URI to a Bitmap
-            val uri = Uri.parse(imageUri)
-            val imageBitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uri)
-
-            // Convert the Bitmap to a ByteArray
-            val outputStream = ByteArrayOutputStream()
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-            val byteArray = outputStream.toByteArray()
-
-            // Insert the image data into Room
-            GlobalScope.launch {
-                imageDao.insertImage(Images(imageData = byteArray))
-            }
-            // Load the selected image into the ImageView
-            //profileImage.setImageURI(Uri.parse(imageUri))
-            loadImage()
-            //homeActivity.image = imageUri
-
-        }
-    }
-
-    private fun loadImage() {
-        lifecycleScope.launch {
-            val images = imageDao.getAllImages()
-            if (images.isNotEmpty()) {
-                val imagedata = images[0].imageData
-                if (imagedata != null) {
-                    // Convert the image data to a Bitmap
-                    val bitmap = BitmapFactory.decodeByteArray(imagedata, 0, imagedata.size)
-
-                    // Display the Bitmap in an ImageView
-                    profileImage.post {
-                        profileImage.setImageBitmap(bitmap)
+        if (requestCode == 2 && resultCode == Activity.RESULT_OK && data != null) {
+            val imageUri = data.data
+            if (imageUri != null) {
+                val imageName = "${param1?.email_address}-profile-pic.jpg"
+                val imageRef = storageRef?.child("${param1?.email_address}/profile_picture/$imageName")
+                val uploadTask = imageRef?.putFile(imageUri)
+                uploadTask?.continueWithTask { task ->
+                    if (!task.isSuccessful) {
+                        task.exception?.let { throw it }
+                    }
+                    imageRef?.downloadUrl
+                }?.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        loadProfileImage()
                     }
                 }
             }
@@ -141,8 +136,6 @@ class ProfileFragment : Fragment() {
          * @return A new instance of fragment ProfileFragment.
          */
         // TODO: Rename and change types and number of parameters
-        // Room local variable
-        const val PICK_IMAGE_REQUEST = 1
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             ProfileFragment().apply {
