@@ -1,12 +1,10 @@
 package com.example.closetcompanion.fragments
 
-import AddFragment
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import com.example.closetcompanion.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -16,10 +14,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [ClosetFragment.newInstance] factory method to
+ * Use the [closetsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ClosetFragment : Fragment() {
+class closetsFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -36,41 +34,8 @@ class ClosetFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        val view = inflater.inflate(R.layout.fragment_closet, container, false)
-
-        // Find the buttons in the layout
-        val addButton = view.findViewById<Button>(R.id.bAdd)
-        val closetButton = view.findViewById<Button>(R.id.bCloset)
-
-        addButton.setOnClickListener {
-            // Create an instance of the new fragment
-            val addFragment = AddFragment()
-
-            // Get the FragmentManager
-            val fragmentManager = requireActivity().supportFragmentManager
-
-            // Replace the current fragment with the new fragment
-            fragmentManager.beginTransaction()
-                .replace(R.id.home_page_fragment_container, addFragment)
-                .commit()
-        }
-
-        closetButton.setOnClickListener {
-            // Create an instance of the new fragment
-            val closetFragment = closetsFragment()
-
-            // Get the FragmentManager
-            val fragmentManager = requireActivity().supportFragmentManager
-
-            // Replace the current fragment with the new fragment
-            fragmentManager.beginTransaction()
-                .replace(R.id.home_page_fragment_container, closetFragment)
-                .commit()
-        }
-
-        return view
-        //
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_closets, container, false)
     }
 
     companion object {
@@ -80,12 +45,12 @@ class ClosetFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment SettingsFragement.
+         * @return A new instance of fragment closetsFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            ClosetFragment().apply {
+            closetsFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

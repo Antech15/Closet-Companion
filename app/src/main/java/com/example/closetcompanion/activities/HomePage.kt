@@ -12,25 +12,24 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomePage : AppCompatActivity() {
 
+    var user: User? = null
+    var image: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var user: User? = null
         if(intent.hasExtra("user")){
-            var user: User? = intent.extras?.get("user") as User
+            user = intent.extras?.get("user") as User
             //println(user)
             switchToNewFragmentWithUser("profile", user)
         }
         val fragContainer = findViewById<FragmentContainerView>(R.id.home_page_fragment_container)
         setContentView(R.layout.activity_home_page)
 
-
-
-
         findViewById<BottomNavigationView>(R.id.home_page_bottom_nav).setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.ic_profile -> {
                     switchToNewFragment(ProfileFragment())
+                    switchToNewFragmentWithUser("profile", user)
                     true
                 }
                 R.id.ic_feed -> {
