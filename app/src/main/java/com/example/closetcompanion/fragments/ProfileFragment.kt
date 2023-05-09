@@ -35,6 +35,7 @@ class ProfileFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: User? = null
     private var param2: String? = null
+    private lateinit var profileView: ImageView
 
     //private val homeActivity = requireActivity() as HomePage
     //private val user = homeActivity.user

@@ -1,11 +1,19 @@
 package com.example.closetcompanion.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.example.closetcompanion.R
+import com.example.closetcompanion.R.id
+import com.example.closetcompanion.fragments.RecyclerView.RVAdapter
+import com.example.closetcompanion.fragments.RecyclerView.closetItem
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,9 +41,55 @@ class FeedFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_feed, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_feed, container, false)
+        val thang = mutableListOf<closetItem>()
+
+
+
+
+        val db = FirebaseFirestore.getInstance()
+        db.collection("Items/" + "Imurphy92064@gmail.com/" + "Closet")
+            .get()
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    var docNum = 1
+                    var count = 0
+                    var count2 = 0
+                    for (document in it.result!!)
+                        count = count + 1
+                    while (docNum <= count) {
+                        count2 = count2 + 1
+                        for (document in it.result!!) {
+                            val nameTitle = document.data.getValue("name").toString()
+                            val nameColor = document.data.getValue("color").toString()
+                            val nameType = document.data.getValue("type").toString()
+                            val nameSize = document.data.getValue("size").toString()
+                            val nameStatus = document.data.getValue("status").toString()
+                            val nameUser = document.data.getValue("user").toString()
+                            //val complete: Boolean = tComplete == "true"
+                            //if (tID.toString() == count2.toString()) {
+                            val temp = closetItem(nameTitle, nameType, nameColor, nameSize, nameStatus, nameUser)
+                            thang.add(temp)
+                            docNum += 1
+                            //}
+                        }
+                    }
+                    // }
+                    val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
+                    recyclerView.adapter = context?.let { it1 -> RVAdapter(thang, it1) }
+                    //}
+                    /*while (thang.size > 0) {
+                        thang.removeAt(thang.size - 1)
+                    }*/
+
+
+                    //return inflater.inflate(R.layout.fragment_feed, container, false)
+                }
+            }
+
+        return view
     }
 
     companion object {
