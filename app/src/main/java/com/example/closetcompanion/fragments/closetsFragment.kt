@@ -1,8 +1,11 @@
 package com.example.closetcompanion.fragments
 
+import AddClosetFragment
 import android.app.AlertDialog
 import android.os.Bundle
+import android.text.TextUtils.replace
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +19,10 @@ import com.example.closetcompanion.data.ClosetDatabase
 import com.example.closetcompanion.data.ClothesDao
 import com.example.closetcompanion.fragments.RecyclerView.ClosetAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -72,22 +77,31 @@ class closetsFragment : Fragment() {
         val thingamajig3 = Closet(2,"testing", emptyList())
 
         var closetList = mutableListOf<Closet>()
-        closetList.add(thingamajig)
-        closetList.add(thingamajig2)
-        closetList.add(thingamajig3)
-
-        val closetAdapter = context?.let { ClosetAdapter(closetList.toMutableList(), it) }
-        recyclerView.adapter = closetAdapter
-
+        GlobalScope.launch {
+            closetList.addAll(closetDao.getAllClosets())
+            withContext(Dispatchers.Main) {
+                recyclerView.adapter = ClosetAdapter(closetList, requireContext())
+            }
+        }
 
         // Set click listener for add closet button
         val addClosetButton = view.findViewById<FloatingActionButton>(R.id.add_closet_button)
         addClosetButton.setOnClickListener {
-            showAddClosetDialog()
-        }
-    }
+            // Create an instance of the new fragment
+            val addFragment = AddClosetFragment()
 
-    private fun showAddClosetDialog() {
+            // Get the FragmentManager
+            val fragmentManager = requireActivity().supportFragmentManager
+
+            // Replace the current fragment with the new fragment
+            fragmentManager.beginTransaction()
+                .replace(R.id.home_page_fragment_container, addFragment)
+                .commit()
+            }
+        }
+
+
+    /*private fun showAddClosetDialog() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("New Closet Name")
 
@@ -100,6 +114,11 @@ class closetsFragment : Fragment() {
                 val newCloset = Closet(name = newClosetName, outfitIds = emptyList())
                 GlobalScope.launch {
                     closetDao.insertCloset(newCloset)
+                    val clothesList = closetDao.getAllClosets()
+                    clothesList.forEach { clothes ->
+                        println("Clothes id: ${clothes.id}")
+                        println("Clothes name: ${clothes.name}")
+                    }
                    print(newCloset)
                 }
             }
@@ -110,7 +129,7 @@ class closetsFragment : Fragment() {
         }
 
         builder.create().show()
-    }
+    }*/
 
     companion object {
         /**
