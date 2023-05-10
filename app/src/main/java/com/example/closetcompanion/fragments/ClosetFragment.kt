@@ -1,6 +1,8 @@
 package com.example.closetcompanion.fragments
 
+import AddClosetFragment
 import AddFragment
+import AddOutfitFragment
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -45,7 +47,7 @@ class ClosetFragment : Fragment() {
 
         addButton.setOnClickListener {
             // Create an instance of the new fragment
-            val addFragment = AddFragment()
+            val addFragment = AddClosetFragment()
 
             // Get the FragmentManager
             val fragmentManager = requireActivity().supportFragmentManager
