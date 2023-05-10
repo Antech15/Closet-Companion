@@ -85,7 +85,6 @@ class AddOutfitFragment : Fragment() {
                     outfit.clothesIds.forEach { cid ->
                         println("clothes id: ${cid}")
                     }
-                    outfitDao.deleteOutfit(outfit)
                 }
             }
 
