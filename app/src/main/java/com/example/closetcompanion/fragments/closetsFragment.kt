@@ -57,10 +57,30 @@ class closetsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Inflate the layout for this fragment
+        val view = inflater.inflate(R.layout.fragment_closets, container, false)
 
+        // Initialize database and DAO
+        closetDatabase = ClosetDatabase.getDatabase(requireContext())
+        clothesDao = closetDatabase.clothesDao()
+        closetDao = closetDatabase.closetDao()
+
+        recyclerView = view.findViewById(R.id.closet_recycler_view)
+
+        val thingamajig = Closet(0,"Joe mam", emptyList())
+        val thingamajig2 = Closet(1,"hello", emptyList())
+        val thingamajig3 = Closet(2,"testing", emptyList())
+
+        var closetList = mutableListOf<Closet>()
+        GlobalScope.launch {
+            closetList.addAll(closetDao.getAllClosets())
+            withContext(Dispatchers.Main) {
+                recyclerView.adapter = ClosetAdapter(closetList, requireContext())
+            }
+        }
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_closets, container, false)
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
