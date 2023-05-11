@@ -44,6 +44,7 @@ class ClosetFragment : Fragment() {
         // Find the buttons in the layout
         val addButton = view.findViewById<Button>(R.id.bAdd)
         val closetButton = view.findViewById<Button>(R.id.bCloset)
+        val clothesButton = view.findViewById<Button>(R.id.bClothes)
 
         addButton.setOnClickListener {
             // Create an instance of the new fragment
@@ -55,6 +56,19 @@ class ClosetFragment : Fragment() {
             // Replace the current fragment with the new fragment
             fragmentManager.beginTransaction()
                 .replace(R.id.home_page_fragment_container, addFragment)
+                .commit()
+        }
+
+        clothesButton.setOnClickListener {
+            // Create an instance of the new fragment
+            val clothesFragment = ClothesListFragment()
+
+            // Get the FragmentManager
+            val fragmentManager = requireActivity().supportFragmentManager
+
+            // Replace the current fragment with the new fragment
+            fragmentManager.beginTransaction()
+                .replace(R.id.home_page_fragment_container, clothesFragment)
                 .commit()
         }
 
