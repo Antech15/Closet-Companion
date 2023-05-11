@@ -14,6 +14,8 @@ import com.example.closetcompanion.fragments.RecyclerView.closetItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -48,6 +50,8 @@ class FeedFragment : Fragment() {
 
 
 
+        var storageRef: StorageReference? = null
+        storageRef = FirebaseStorage.getInstance().reference
 
         val db = FirebaseFirestore.getInstance()
         db.collection("Items/" + "Imurphy92064@gmail.com/" + "Closet")
@@ -68,9 +72,10 @@ class FeedFragment : Fragment() {
                             val nameSize = document.data.getValue("size").toString()
                             val nameStatus = document.data.getValue("status").toString()
                             val nameUser = document.data.getValue("user").toString()
+                            val imageRef = document.data.getValue("image").toString()
                             //val complete: Boolean = tComplete == "true"
                             //if (tID.toString() == count2.toString()) {
-                            val temp = closetItem(nameTitle, nameType, nameColor, nameSize, nameStatus, nameUser)
+                            val temp = closetItem(nameTitle, nameType, nameColor, nameSize, nameStatus, nameUser, imageRef)
                             thang.add(temp)
                             docNum += 1
                             //}

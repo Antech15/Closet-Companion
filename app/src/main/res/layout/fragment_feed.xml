@@ -23,7 +23,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="409dp"
-        android:layout_height="570dp"
+        android:layout_height="525dp"
         android:layout_marginTop="124dp"
         app:layoutManager="LinearLayoutManager"
         app:layout_constraintTop_toTopOf="parent"

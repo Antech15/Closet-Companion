@@ -9,5 +9,5 @@ data class closetItem(
     val size: String,
     val status: String,
     val user: String,
-    //val image: ImageView,
+    val image: String,
 ): Serializable
