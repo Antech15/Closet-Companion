@@ -1,5 +1,6 @@
 package com.example.closetcompanion.fragments.RecyclerView
 
+import AddOutfitFragment
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,11 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.closetcompanion.R
-import com.example.closetcompanion.data.Closet
 import com.example.closetcompanion.data.ClosetDao
 import com.example.closetcompanion.data.ClosetDatabase
+import com.example.closetcompanion.data.ClothesDao
 import com.example.closetcompanion.data.Outfit
 import com.example.closetcompanion.data.OutfitDao
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -24,14 +26,15 @@ private const val ARG_PARAM2 = "param2"
 private lateinit var closetDatabase: ClosetDatabase
 private lateinit var closetDao: ClosetDao
 private lateinit var outfitsDao: OutfitDao
+private lateinit var clothesDao: ClothesDao
 private lateinit var recyclerView: RecyclerView
 
 /**
  * A simple [Fragment] subclass.
- * Use the [ClosetListFragment.newInstance] factory method to
+ * Use the [OutfitListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ClosetListFragment : Fragment() {
+class OutfitListFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -49,31 +52,40 @@ class ClosetListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_closet_list, container, false)
-
-        val closet = arguments?.getSerializable("closet") as Closet
-
-        println(closet)
+        val view = inflater.inflate(R.layout.fragment_outfit_list, container, false)
 
         // Initialize database and DAO
         closetDatabase = ClosetDatabase.getDatabase(requireContext())
         outfitsDao = closetDatabase.outfitDao()
         closetDao = closetDatabase.closetDao()
+        clothesDao = closetDatabase.clothesDao()
+
+        // Set click listener for add closet button
+        val addOutfitButton = view.findViewById<FloatingActionButton>(R.id.add_outfit_button)
+        addOutfitButton.setOnClickListener {
+            // Create an instance of the new fragment
+            val addFragment = AddOutfitFragment()
+
+            // Get the FragmentManager
+            val fragmentManager = requireActivity().supportFragmentManager
+
+            // Replace the current fragment with the new fragment
+            fragmentManager.beginTransaction()
+                .replace(R.id.home_page_fragment_container, addFragment)
+                .commit()
+        }
 
         recyclerView = view.findViewById(R.id.outfit_recycler_view)
 
         var outfitList = mutableListOf<Outfit>()
         GlobalScope.launch {
-            if (closet != null) {
 
-                closet.outfitIds.forEach { oid ->
-                    outfitsDao.getOutfitById(oid)?.let { outfitList.add(it) }
-                }
-                println(outfitList)
-            }
+            outfitList.addAll(outfitsDao.getAllOutfits())
+
             withContext(Dispatchers.Main) {
                 recyclerView.adapter = OutfitAdapter(outfitList, requireContext())
             }
+
         }
 
         // Inflate the layout for this fragment
@@ -87,12 +99,12 @@ class ClosetListFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment ClosetListFragment.
+         * @return A new instance of fragment OutfitListFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            ClosetListFragment().apply {
+            OutfitListFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

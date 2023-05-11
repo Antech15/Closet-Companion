@@ -64,7 +64,7 @@ class ClothesListFragment : Fragment() {
         clothesDao = closetDatabase.clothesDao()
 
         // Set click listener for add closet button
-        val addClothesButton = view.findViewById<FloatingActionButton>(R.id.add_clothes_button)
+        val addClothesButton = view.findViewById<FloatingActionButton>(R.id.add_outfit_button)
         addClothesButton.setOnClickListener {
             // Create an instance of the new fragment
             val addFragment = AddFragment()
@@ -78,7 +78,7 @@ class ClothesListFragment : Fragment() {
                 .commit()
         }
 
-        recyclerView = view.findViewById(R.id.closet_recycler_view)
+        recyclerView = view.findViewById(R.id.outfit_recycler_view)
 
         var clothesList = mutableListOf<Clothes>()
         GlobalScope.launch {

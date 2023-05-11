@@ -49,6 +49,7 @@ class ClothesDetails : Fragment() {
         var pic = view.findViewById<ImageView>(R.id.imageView)
         val picData = clothes.imageData
         val clothesBitmap = BitmapFactory.decodeByteArray(picData, 0, picData.size)
+        pic.setImageBitmap(clothesBitmap)
 
         var thang1 = view.findViewById<TextView>(R.id.textView1)
         var thang2 = view.findViewById<TextView>(R.id.textView2)

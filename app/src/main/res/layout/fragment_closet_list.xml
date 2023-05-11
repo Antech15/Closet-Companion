@@ -10,7 +10,7 @@
     <!-- TODO: Update blank fragment layout -->
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/closet_recycler_view"
+        android:id="@+id/outfit_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="570dp"
         app:layoutManager="LinearLayoutManager"

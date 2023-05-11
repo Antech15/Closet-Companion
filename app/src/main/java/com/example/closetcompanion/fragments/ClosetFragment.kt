@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.example.closetcompanion.R
+import com.example.closetcompanion.data.Outfit
+import com.example.closetcompanion.fragments.RecyclerView.OutfitListFragment
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,6 +47,7 @@ class ClosetFragment : Fragment() {
         val addButton = view.findViewById<Button>(R.id.bAdd)
         val closetButton = view.findViewById<Button>(R.id.bCloset)
         val clothesButton = view.findViewById<Button>(R.id.bClothes)
+        val outfitButton = view.findViewById<Button>(R.id.bOutfit)
 
         addButton.setOnClickListener {
             // Create an instance of the new fragment
@@ -69,6 +72,19 @@ class ClosetFragment : Fragment() {
             // Replace the current fragment with the new fragment
             fragmentManager.beginTransaction()
                 .replace(R.id.home_page_fragment_container, clothesFragment)
+                .commit()
+        }
+
+        outfitButton.setOnClickListener {
+            // Create an instance of the new fragment
+            val outfitsFragment = OutfitListFragment()
+
+            // Get the FragmentManager
+            val fragmentManager = requireActivity().supportFragmentManager
+
+            // Replace the current fragment with the new fragment
+            fragmentManager.beginTransaction()
+                .replace(R.id.home_page_fragment_container, outfitsFragment)
                 .commit()
         }
 

@@ -8,7 +8,7 @@
     tools:context=".fragments.ClothesListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/closet_recycler_view"
+        android:id="@+id/outfit_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="570dp"
         app:layoutManager="LinearLayoutManager"
@@ -32,7 +32,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_clothes_button"
+        android:id="@+id/add_outfit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"

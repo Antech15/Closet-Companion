@@ -1,16 +1,11 @@
 package com.example.closetcompanion.fragments
 
 import AddClosetFragment
-import android.app.AlertDialog
 import android.os.Bundle
-import android.text.TextUtils.replace
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.closetcompanion.R
 import com.example.closetcompanion.data.Closet
@@ -65,7 +60,7 @@ class closetsFragment : Fragment() {
         clothesDao = closetDatabase.clothesDao()
         closetDao = closetDatabase.closetDao()
 
-        recyclerView = view.findViewById(R.id.closet_recycler_view)
+        recyclerView = view.findViewById(R.id.outfit_recycler_view)
 
         var closetList = mutableListOf<Closet>()
         GlobalScope.launch {
@@ -86,7 +81,7 @@ class closetsFragment : Fragment() {
         clothesDao = closetDatabase.clothesDao()
         closetDao = closetDatabase.closetDao()
 
-        recyclerView = view.findViewById(R.id.closet_recycler_view)
+        recyclerView = view.findViewById(R.id.outfit_recycler_view)
 
 
         var closetList = mutableListOf<Closet>()
