@@ -9,10 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.closetcompanion.R
+import com.example.closetcompanion.data.Closet
 import com.example.closetcompanion.data.ClosetDao
 import com.example.closetcompanion.data.ClosetDatabase
 import com.example.closetcompanion.data.Clothes
 import com.example.closetcompanion.data.ClothesDao
+import com.example.closetcompanion.data.Outfit
 import com.example.closetcompanion.data.OutfitDao
 import com.example.closetcompanion.fragments.RecyclerView.ClothesAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -57,6 +59,8 @@ class ClothesListFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_clothes_list, container, false)
 
+        val outfit = arguments?.getSerializable("outfit") as? Outfit
+
         // Initialize database and DAO
         closetDatabase = ClosetDatabase.getDatabase(requireContext())
         outfitsDao = closetDatabase.outfitDao()
@@ -77,20 +81,36 @@ class ClothesListFragment : Fragment() {
                 .replace(R.id.home_page_fragment_container, addFragment)
                 .commit()
         }
+    if(outfit == null) {
+        recyclerView = view.findViewById(R.id.outfit_recycler_view)
+
+    var clothesList = mutableListOf<Clothes>()
+    GlobalScope.launch {
+
+        clothesList.addAll(clothesDao.getAllClothes())
+
+        withContext(Dispatchers.Main) {
+            recyclerView.adapter = ClothesAdapter(clothesList, requireContext())
+        }
+
+         }
+        }
+        else {
 
         recyclerView = view.findViewById(R.id.outfit_recycler_view)
 
         var clothesList = mutableListOf<Clothes>()
         GlobalScope.launch {
 
-            clothesList.addAll(clothesDao.getAllClothes())
+            clothesList.addAll(outfitsDao.getClothesByOutfitId(outfit.id))
+            println(clothesList)
+            withContext(Dispatchers.Main) {
+                recyclerView.adapter = ClothesAdapter(clothesList, requireContext())
+            }
 
-        withContext(Dispatchers.Main) {
-            recyclerView.adapter = ClothesAdapter(clothesList, requireContext())
         }
 
-        }
-
+    }
         // Inflate the layout for this fragment
         return view
     }

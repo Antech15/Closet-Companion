@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.closetcompanion.R
 import com.example.closetcompanion.data.Outfit
+import com.example.closetcompanion.fragments.ClothesListFragment
 
 class OutfitAdapter(
     private val outfitList: List<Outfit>,
@@ -45,9 +46,9 @@ class OutfitAdapter(
                     "You have clicked ${outfitList[adapterPosition].name}",
                     Toast.LENGTH_LONG
                 ).show()
-                val outfitListFrag = OutfitListFragment()
+                val outfitListFrag = ClothesListFragment()
                 val bundle = Bundle()
-                bundle.putSerializable("closet", outfitList[adapterPosition])
+                bundle.putSerializable("outfit", outfitList[adapterPosition])
                 outfitListFrag.arguments = bundle
                 val fragmentManager = (itemView.context as AppCompatActivity).supportFragmentManager
                 fragmentManager.beginTransaction()
