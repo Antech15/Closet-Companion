@@ -60,6 +60,19 @@ class OutfitListFragment : Fragment() {
         closetDao = closetDatabase.closetDao()
         clothesDao = closetDatabase.clothesDao()
 
+        recyclerView = view.findViewById(R.id.outfit_recycler_view)
+
+        var outfitList = mutableListOf<Outfit>()
+        GlobalScope.launch {
+
+            outfitList.addAll(outfitsDao.getAllOutfits())
+
+            withContext(Dispatchers.Main) {
+                recyclerView.adapter = OutfitAdapter(outfitList, requireContext())
+            }
+
+        }
+
         // Set click listener for add closet button
         val addOutfitButton = view.findViewById<FloatingActionButton>(R.id.add_outfit_button)
         addOutfitButton.setOnClickListener {
@@ -73,19 +86,6 @@ class OutfitListFragment : Fragment() {
             fragmentManager.beginTransaction()
                 .replace(R.id.home_page_fragment_container, addFragment)
                 .commit()
-        }
-
-        recyclerView = view.findViewById(R.id.outfit_recycler_view)
-
-        var outfitList = mutableListOf<Outfit>()
-        GlobalScope.launch {
-
-            outfitList.addAll(outfitsDao.getAllOutfits())
-
-            withContext(Dispatchers.Main) {
-                recyclerView.adapter = OutfitAdapter(outfitList, requireContext())
-            }
-
         }
 
         // Inflate the layout for this fragment

@@ -21,6 +21,8 @@ import androidx.work.OneTimeWorkRequestBuilder
 import com.example.closetcompanion.R
 import com.example.closetcompanion.activities.HomePage
 import com.example.closetcompanion.data.*
+import com.example.closetcompanion.fragments.RecyclerView.OutfitListFragment
+import com.example.closetcompanion.fragments.closetsFragment
 import com.example.closetcompanion.models.Item
 import com.example.closetcompanion.models.User
 import com.google.firebase.firestore.FirebaseFirestore
@@ -87,7 +89,16 @@ class AddOutfitFragment : Fragment() {
                     }
                 }
             }
+            // Create an instance of the new fragment
+            val outfitFragment = OutfitListFragment()
 
+            // Get the FragmentManager
+            val fragmentManager = requireActivity().supportFragmentManager
+
+            // Replace the current fragment with the new fragment
+            fragmentManager.beginTransaction()
+                .replace(R.id.home_page_fragment_container, outfitFragment)
+                .commit()
 
         }
 

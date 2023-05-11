@@ -27,8 +27,8 @@ class OutfitAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val closet = outfitList[position]
-        holder.outfitName.text = closet.name
+        val outfit = outfitList[position]
+        holder.outfitName.text = outfit.name
     }
 
     override fun getItemCount(): Int {
@@ -45,7 +45,7 @@ class OutfitAdapter(
                     "You have clicked ${outfitList[adapterPosition].name}",
                     Toast.LENGTH_LONG
                 ).show()
-                val outfitListFrag = ClosetListFragment()
+                val outfitListFrag = OutfitListFragment()
                 val bundle = Bundle()
                 bundle.putSerializable("closet", outfitList[adapterPosition])
                 outfitListFrag.arguments = bundle
