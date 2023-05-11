@@ -3,11 +3,13 @@ package com.example.closetcompanion.fragments.RecyclerView
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.closetcompanion.R
 import com.example.closetcompanion.data.Closet
@@ -44,9 +46,15 @@ class ClosetAdapter(
                     "You have clicked ${closetList[adapterPosition].name}",
                     Toast.LENGTH_LONG
                 ).show()
-                val intent = Intent(itemView.context, Details::class.java)
-                intent.putExtra("thang", closetList[adapterPosition] as java.io.Serializable)
-                mContext.startActivity(intent)
+                val closetListFrag = ClosetListFragment()
+                val bundle = Bundle()
+                bundle.putSerializable("closet", closetList[adapterPosition])
+                closetListFrag.arguments = bundle
+                val fragmentManager = (itemView.context as AppCompatActivity).supportFragmentManager
+                fragmentManager.beginTransaction()
+                    .replace(R.id.home_page_fragment_container, closetListFrag)
+                    .addToBackStack(null)
+                    .commit()
             }
         }
     }
