@@ -51,7 +51,7 @@ class ClosetFragment : Fragment() {
 
         addButton.setOnClickListener {
             // Create an instance of the new fragment
-            val addFragment = AddClosetFragment()
+            val addFragment = AddFragment()
 
             // Get the FragmentManager
             val fragmentManager = requireActivity().supportFragmentManager
