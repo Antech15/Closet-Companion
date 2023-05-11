@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.closetcompanion.R
 import com.example.closetcompanion.data.Closet
 import com.example.closetcompanion.data.Clothes
+import com.example.closetcompanion.fragments.ClothesDetails
 import com.example.closetcompanion.fragments.ClothesListFragment
 
 class ClothesAdapter(
@@ -48,13 +49,13 @@ class ClothesAdapter(
                     "You have clicked ${clothesList[adapterPosition].name}",
                     Toast.LENGTH_LONG
                 ).show()
-                val clothesListFrag = ClothesListFragment()
+                val clothesDetails = ClothesDetails()
                 val bundle = Bundle()
                 bundle.putSerializable("clothes", clothesList[adapterPosition])
-                clothesListFrag.arguments = bundle
+                clothesDetails.arguments = bundle
                 val fragmentManager = (itemView.context as AppCompatActivity).supportFragmentManager
                 fragmentManager.beginTransaction()
-                    .replace(R.id.home_page_fragment_container, clothesListFrag)
+                    .replace(R.id.home_page_fragment_container, clothesDetails)
                     .addToBackStack(null)
                     .commit()
             }
