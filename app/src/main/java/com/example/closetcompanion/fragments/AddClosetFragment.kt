@@ -72,19 +72,15 @@ class AddClosetFragment : Fragment() {
                 outfitList.forEach { oname ->
                     val outfit = outfitDao.getOutfitByName(oname)
                     if (outfit != null) {
-                        println("oname: " + oname + "/ id: " + outfit.id)
                         outfitIds.add(outfit.id)
                     }
                 }
-                println(outfitIds)
                 closetDao.insertCloset(Closet( name = name, outfitIds = outfitIds))
 
                 val closetList = closetDao.getAllClosets()
                 closetList.forEach { closet ->
-                    println("closet id: ${closet.id}")
-                    println("closet name: ${closet.name}")
+
                     closet.outfitIds.forEach { oid ->
-                        println("outfit id: ${oid}")
                     }
                 }
             }

@@ -53,7 +53,6 @@ class ClosetListFragment : Fragment() {
 
         val closet = arguments?.getSerializable("closet") as Closet
 
-        println(closet)
 
         // Initialize database and DAO
         closetDatabase = ClosetDatabase.getDatabase(requireContext())
@@ -69,7 +68,6 @@ class ClosetListFragment : Fragment() {
                 closet.outfitIds.forEach { oid ->
                     outfitsDao.getOutfitById(oid)?.let { outfitList.add(it) }
                 }
-                println(outfitList)
             }
             withContext(Dispatchers.Main) {
                 recyclerView.adapter = OutfitAdapter(outfitList, requireContext())

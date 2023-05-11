@@ -105,7 +105,6 @@ class ClothesListFragment : Fragment() {
             outfit.clothesIds.forEach { oid ->
                 clothesDao.getClothesById(oid)?.let { clothesList.add(it) }
             }
-            println(clothesList)
             withContext(Dispatchers.Main) {
                 recyclerView.adapter = ClothesAdapter(clothesList, requireContext())
             }
