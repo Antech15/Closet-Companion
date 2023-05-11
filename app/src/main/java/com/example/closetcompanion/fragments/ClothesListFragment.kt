@@ -102,7 +102,9 @@ class ClothesListFragment : Fragment() {
         var clothesList = mutableListOf<Clothes>()
         GlobalScope.launch {
 
-            clothesList.addAll(outfitsDao.getClothesByOutfitId(outfit.id))
+            outfit.clothesIds.forEach { oid ->
+                clothesDao.getClothesById(oid)?.let { clothesList.add(it) }
+            }
             println(clothesList)
             withContext(Dispatchers.Main) {
                 recyclerView.adapter = ClothesAdapter(clothesList, requireContext())
