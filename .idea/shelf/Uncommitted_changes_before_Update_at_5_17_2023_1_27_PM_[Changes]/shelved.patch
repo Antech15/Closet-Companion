@@ -1,0 +1,85 @@
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_5_6_2023_1_38_PM__Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_6_2023_1_38_PM__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_6_2023_1_38_PM__Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_6_2023_1_38_PM__Changes_.xml	(revision bfc677388343c3553230f30e42e95a1740ea9512)
++++ /dev/null	(revision bfc677388343c3553230f30e42e95a1740ea9512)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Checkout_at_5_6_2023_1_38_PM_[Changes]" date="1683405512864" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_6_2023_1_38_PM_[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 5/6/2023 1:38 PM [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_5_6_2023_1_38_PM_[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_6_2023_1_38_PM_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_6_2023_1_38_PM_[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_6_2023_1_38_PM_[Changes]/shelved.patch	(revision bfc677388343c3553230f30e42e95a1740ea9512)
++++ /dev/null	(revision bfc677388343c3553230f30e42e95a1740ea9512)
+@@ -1,38 +0,0 @@
+-Index: .idea/compiler.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CompilerConfiguration\">\r\n    <bytecodeTargetLevel target=\"11\" />\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+---- a/.idea/compiler.xml	(revision 31146dacc300d63cea3e371f5664572e2b62ae4b)
+-+++ b/.idea/compiler.xml	(date 1682890418075)
+-@@ -1,6 +1,6 @@
+- <?xml version="1.0" encoding="UTF-8"?>
+- <project version="4">
+-   <component name="CompilerConfiguration">
+--    <bytecodeTargetLevel target="11" />
+-+    <bytecodeTargetLevel target="17" />
+-   </component>
+- </project>
+-\ No newline at end of file
+-Index: .idea/misc.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"Android Studio default JDK\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/misc.xml b/.idea/misc.xml
+---- a/.idea/misc.xml	(revision 31146dacc300d63cea3e371f5664572e2b62ae4b)
+-+++ b/.idea/misc.xml	(date 1683405309978)
+-@@ -1,7 +1,6 @@
+--<?xml version="1.0" encoding="UTF-8"?>
+- <project version="4">
+-   <component name="ExternalStorageConfigurationManager" enabled="true" />
+--  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+-+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
+-     <output url="file://$PROJECT_DIR$/build/classes" />
+-   </component>
+-   <component name="ProjectType">
+Index: app/src/main/java/com/example/closetcompanion/fragments/FeedFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.closetcompanion.fragments\r\n\r\nimport android.content.Intent\r\nimport android.os.Bundle\r\nimport androidx.fragment.app.Fragment\r\nimport android.view.LayoutInflater\r\nimport android.view.View\r\nimport android.view.ViewGroup\r\nimport androidx.recyclerview.widget.RecyclerView\r\nimport com.example.closetcompanion.R\r\nimport com.example.closetcompanion.R.id\r\nimport com.example.closetcompanion.fragments.RecyclerView.RVAdapter\r\nimport com.example.closetcompanion.fragments.RecyclerView.closetItem\r\nimport com.google.android.material.bottomnavigation.BottomNavigationView\r\nimport com.google.android.material.floatingactionbutton.FloatingActionButton\r\nimport com.google.firebase.firestore.FirebaseFirestore\r\nimport com.google.firebase.storage.FirebaseStorage\r\nimport com.google.firebase.storage.StorageReference\r\n\r\n// TODO: Rename parameter arguments, choose names that match\r\n// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER\r\nprivate const val ARG_PARAM1 = \"param1\"\r\nprivate const val ARG_PARAM2 = \"param2\"\r\n\r\n/**\r\n * A simple [Fragment] subclass.\r\n * Use the [FeedFragment.newInstance] factory method to\r\n * create an instance of this fragment.\r\n */\r\nclass FeedFragment : Fragment() {\r\n    // TODO: Rename and change types of parameters\r\n    private var param1: String? = null\r\n    private var param2: String? = null\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        arguments?.let {\r\n            param1 = it.getString(ARG_PARAM1)\r\n            param2 = it.getString(ARG_PARAM2)\r\n        }\r\n    }\r\n\r\n    override fun onCreateView(\r\n        inflater: LayoutInflater, container: ViewGroup?,\r\n        savedInstanceState: Bundle?\r\n    ): View {\r\n        // Inflate the layout for this fragment\r\n        val view: View = inflater.inflate(R.layout.fragment_feed, container, false)\r\n        val thang = mutableListOf<closetItem>()\r\n\r\n\r\n\r\n        var storageRef: StorageReference? = null\r\n        storageRef = FirebaseStorage.getInstance().reference\r\n\r\n        val db = FirebaseFirestore.getInstance()\r\n        db.collection(\"Items/\" + \"Imurphy92064@gmail.com/\" + \"Closet\")\r\n            .get()\r\n            .addOnCompleteListener {\r\n                if (it.isSuccessful) {\r\n                    var docNum = 1\r\n                    var count = 0\r\n                    var count2 = 0\r\n                    for (document in it.result!!)\r\n                        count = count + 1\r\n                    while (docNum <= count) {\r\n                        count2 = count2 + 1\r\n                        for (document in it.result!!) {\r\n                            val nameTitle = document.data.getValue(\"name\").toString()\r\n                            val nameColor = document.data.getValue(\"color\").toString()\r\n                            val nameType = document.data.getValue(\"type\").toString()\r\n                            val nameSize = document.data.getValue(\"size\").toString()\r\n                            val nameStatus = document.data.getValue(\"status\").toString()\r\n                            val nameUser = document.data.getValue(\"user\").toString()\r\n                            val imageRef = document.data.getValue(\"image\").toString()\r\n                            //val complete: Boolean = tComplete == \"true\"\r\n                            //if (tID.toString() == count2.toString()) {\r\n                            val temp = closetItem(nameTitle, nameType, nameColor, nameSize, nameStatus, nameUser, imageRef)\r\n                            thang.add(temp)\r\n                            docNum += 1\r\n                            //}\r\n                        }\r\n                    }\r\n                    // }\r\n                    val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)\r\n                    recyclerView.adapter = context?.let { it1 -> RVAdapter(thang, it1) }\r\n                    //}\r\n                    /*while (thang.size > 0) {\r\n                        thang.removeAt(thang.size - 1)\r\n                    }*/\r\n\r\n\r\n                    //return inflater.inflate(R.layout.fragment_feed, container, false)\r\n                }\r\n            }\r\n\r\n        return view\r\n    }\r\n\r\n    companion object {\r\n        /**\r\n         * Use this factory method to create a new instance of\r\n         * this fragment using the provided parameters.\r\n         *\r\n         * @param param1 Parameter 1.\r\n         * @param param2 Parameter 2.\r\n         * @return A new instance of fragment FeedFragment.\r\n         */\r\n        // TODO: Rename and change types and number of parameters\r\n        @JvmStatic\r\n        fun newInstance(param1: String, param2: String) =\r\n            FeedFragment().apply {\r\n                arguments = Bundle().apply {\r\n                    putString(ARG_PARAM1, param1)\r\n                    putString(ARG_PARAM2, param2)\r\n                }\r\n            }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/closetcompanion/fragments/FeedFragment.kt b/app/src/main/java/com/example/closetcompanion/fragments/FeedFragment.kt
+--- a/app/src/main/java/com/example/closetcompanion/fragments/FeedFragment.kt	(revision bfc677388343c3553230f30e42e95a1740ea9512)
++++ b/app/src/main/java/com/example/closetcompanion/fragments/FeedFragment.kt	(date 1684354613359)
+@@ -9,6 +9,7 @@
+ import androidx.recyclerview.widget.RecyclerView
+ import com.example.closetcompanion.R
+ import com.example.closetcompanion.R.id
++import com.example.closetcompanion.activities.HomePage
+ import com.example.closetcompanion.fragments.RecyclerView.RVAdapter
+ import com.example.closetcompanion.fragments.RecyclerView.closetItem
+ import com.google.android.material.bottomnavigation.BottomNavigationView
+@@ -48,6 +49,9 @@
+         val view: View = inflater.inflate(R.layout.fragment_feed, container, false)
+         val thang = mutableListOf<closetItem>()
+ 
++        val homeActivity = requireActivity() as HomePage
++        val userr = homeActivity.user
++        val email = userr!!.email_address
+ 
+ 
+         var storageRef: StorageReference? = null

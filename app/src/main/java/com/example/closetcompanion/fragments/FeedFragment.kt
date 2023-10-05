@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.closetcompanion.R
 import com.example.closetcompanion.R.id
+import com.example.closetcompanion.activities.HomePage
 import com.example.closetcompanion.fragments.RecyclerView.RVAdapter
 import com.example.closetcompanion.fragments.RecyclerView.closetItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -48,6 +49,9 @@ class FeedFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_feed, container, false)
         val thang = mutableListOf<closetItem>()
 
+        val homeActivity = requireActivity() as HomePage
+        val userr = homeActivity.user
+        val email = userr!!.email_address
 
 
         var storageRef: StorageReference? = null
