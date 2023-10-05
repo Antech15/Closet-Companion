@@ -8,15 +8,15 @@
 <h4 align="center"> Alfonso De La Cruz</h4>
 <h4 align="center"> Ian Murphy</h4>
 
-1. Why this project?
-People own a lot of clothes, but only a small percentage of it actually
-gets worn on a daily basis. We often lose and/or forget about our clothes,
-because of this, we are inclined to buy more clothes, wasting valuable time
-and money. With all the options of clothes to wear people have a hard time
-deciding what outfits to pick. Our app will allow people to keep track of
-their clothes, in an effort to solve these problems. It will allow users to see,
-catalog and arrange the clothes that they own.
-2. Potential features
+<h4 align="left"> 1. Why this Project?</h4>
+  People own a lot of clothes, but only a small percentage of it actually
+  gets worn on a daily basis. We often lose and/or forget about our clothes,
+  because of this, we are inclined to buy more clothes, wasting valuable time
+  and money. With all the options of clothes to wear people have a hard time
+  deciding what outfits to pick. Our app will allow people to keep track of
+  their clothes, in an effort to solve these problems. It will allow users to see,
+  catalog and arrange the clothes that they own.
+<h4 align="left"> 2. Potential Features</h4>
 ● Add your clothes by assigning name, picture, and clothing info
 (type, size, brand, age), location
 ● Set status of clothes: (clean / dirty / washing)
@@ -25,7 +25,7 @@ wear it
 ● Search bar to search for clothes
 ● Store User’s closets including; all pieces, & outfits
 ● Ability to combine clothing to make outfits.
-3. Outstanding features: (if time allows)
+<h4 align="left"> 3. Outstanding Features (if time allows)</h4>
 ● Server
 ● User profiles.
 ● Ability to log into a User account
@@ -40,7 +40,7 @@ wear it
 ● save clothing as 3D models
 ● Put clothing on models
 ● Augmented Reality to view clothes
-4. Design concepts
+<h4 align="left"> 4. Design Concepts</h4>
 4.1. Front end
 ● RecyclerView
 ○ Dynamic Infinite scroll of items for viewing
@@ -58,7 +58,7 @@ wear it
 ● WorkManager
 ● Unit Tests(Devops)
 ● Room
-5. UI Design Requirements
+<h4 align="left"> 5. UI Design Requirements</h4>
 ● Main Menu page with 4 buttons for create clothing, create
 outfit, create closet, view owned
 ● Page to create clothing object and input info
