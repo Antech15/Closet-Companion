@@ -8,16 +8,20 @@
 <h4 align="center"> Alfonso De La Cruz</h4>
 <h4 align="center"> Ian Murphy</h4>
 
- **1. Why this Project?**
-  -People own a lot of clothes, but only a small percentage of it actually gets worn on a daily basis. We often lose and/or forget about our clothes, because of this, we are inclined to buy more clothes, wasting valuable time and money. With all the options of clothes to wear people have a hard time deciding what outfits to pick. Our app will allow people to keep track of their clothes, in an effort to solve these problems. It will allow users to see, catalog and arrange the clothes that they own.
-**2. Potential Features**
-  -Add your clothes by assigning name, picture, and clothing info (type, size, brand, age, location)
+ 1. **Why this Project?**
+  - People own a lot of clothes, but only a small percentage of it actually gets worn on a daily basis. We often lose and/or forget about our clothes, because of this, we are inclined to buy more clothes, wasting valuable time and money. With all the options of clothes to wear people have a hard time deciding what outfits to pick. Our app will allow people to keep track of their clothes, in an effort to solve these problems. It will allow users to see, catalog and arrange the clothes that they own.
+
+
+
+    
+2. **Potential Features**
+  - Add your clothes by assigning name, picture, and clothing info (type, size, brand, age, location)
   - Set status of clothes: (clean / dirty / washing)
   - Track when you last wore clothing and how frequently you wear it
   - Search bar to search for clothes
   - Store User’s closets including; all pieces, & outfits
   - Ability to combine clothing to make outfits.
-**3. Outstanding Features (if time allows)**
+3. **Outstanding Features (if time allows)**
   - Server
   - User profiles.
   - Ability to log into a User account
@@ -32,7 +36,7 @@
   - save clothing as 3D models
   - Put clothing on models
   - Augmented Reality to view clothes
-**4. Design Concepts**
+4. **Design Concepts**
   - 4.1. Front end
     - RecyclerView
     - Dynamic Infinite scroll of items for viewing
@@ -50,7 +54,7 @@
     - WorkManager
     - Unit Tests(Devops)
     - Room
-**5. UI Design Requirements**
+5. **UI Design Requirements**
   - Main Menu page with 4 buttons for create clothing, create outfit, create closet, view owned
   - Page to create clothing object and input info
   - Page to create outfits by assigning clothing into it
